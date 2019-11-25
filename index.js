@@ -15,7 +15,7 @@ express()
     .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 function getOrder(req, res) {
-    var sql = "SELECT * FROM order_list";
+    var sql = "SELECT * FROM order_list WHERE (staff_id = 1)";
     console.log("result.rows");
     pool.query(sql, function(err, result) {
         // If an error occurred...
@@ -27,7 +27,9 @@ function getOrder(req, res) {
         // Log this to the console for debugging purposes.
         console.log("Back from DB with result:");
         console.log(result.rows);
-        res.json(result.rows);
+        rowsjson = result.rows;
+        console.log(rowsjson);
+        res.render('pages/getOrder', { "rowsjson": rowsjson });
     });
 
 }
