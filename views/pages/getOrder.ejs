@@ -3,6 +3,18 @@
 
 <head>
     <% include ../partials/header.ejs %>
+        <link rel="stylesheet" href="https://js.arcgis.com/4.13/esri/themes/light/main.css">
+        <script src="https://js.arcgis.com/4.13/"></script>
+        <style>
+            html,
+            body,
+            #viewDiv {
+                padding: 0;
+                margin: 0;
+                height: 100%;
+                width: 100%;
+            }
+        </style>
 </head>
 
 <body>
@@ -12,29 +24,60 @@
         <div class="jumbotron text-center">
             <div class="container">
                 <h3>Hi Jack! Welcome to work. Press this button to check your order</h3>
-                <a type="button" class="btn btn-lg btn-primary" href="/getOrder"><span class="glyphicon glyphicon-download"></span>Get Your Order</a>
+                <form action="/toGo" method="POST">
+                    <span class="glyphicon glyphicon-download"></span><input type="submit" id="checkOut" class="btn btn-lg btn-primary" value="Check Out"></span>
             </div>
         </div>
 
-        <div class="container">
-            <form>
+        <div class="container-fluid">
+            <div class="row flex-row flex-nowrap" id="box">
                 <%rowsjson.forEach((item) => {%>
-                    <div class="shadow p-3 mb-5 bg-white rounded">
-                        <input type="checkbox"> Order time:
-                        <%=item.order_time%>
-                            <br> Expected Arrival Time:
-                            <%=item.expected_time%>
-                                <br> Address:
-                                <%=item.address%>
-                                    <br> Item:
-                                    <%=item.items%>
-                                        <br>
+                    <div id="viewDiv"></div>
+                    <div class="col-md-4 col-lg-4">
+                        <div class="shadow p-3 mb-5 bg-white rounded card" style="width: 20rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Order</h5>
+                                <p class="card-text">
+                                    Order time:
+                                    <%=item.order_time%>
+                                        <br> Expected Arrival Time:
+                                        <%=item.expected_time%>
+                                            <br> Address:
+                                            <%=item.address%>
+                                                <br> Item:
+                                                <%=item.items%>
+                                                    <br>
+                                </p>
 
+                                <input type="checkbox" name="order" value="<%=item.id%>" autocomplete="off">Take It
+
+                            </div>
+                        </div>
                     </div>
                     <% }); %>
-            </form>
+            </div>
         </div>
+        </form>
 
 </body>
+
+<script>
+    require([
+        "esri/Map",
+        "esri/views/MapView"
+    ], function(Map, MapView) {
+
+        var map = new Map({
+            basemap: "topo-vector"
+        });
+
+        var view = new MapView({
+            container: "viewDiv",
+            map: map,
+            center: [-111.7897, 43.8260], // longitude, latitude
+            zoom: 15
+        });
+    });
+</script>
 
 </html>

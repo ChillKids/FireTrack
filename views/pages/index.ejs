@@ -3,6 +3,19 @@
 
 <head>
     <% include ../partials/header.ejs %>
+        <link rel="stylesheet" href="https://js.arcgis.com/4.13/esri/themes/light/main.css">
+        <script src="https://js.arcgis.com/4.13/"></script>
+        <style>
+            html,
+            body,
+            #viewDiv {
+                padding: 40;
+                margin: 60;
+                height: 100%;
+                width: 100%;
+            }
+        </style>
+
 </head>
 
 <body>
@@ -17,9 +30,44 @@
         </div>
 
         <div class="container">
+            <%rowsjson.forEach((item) => {%>
+                <div class="shadow p-3 mb-5 bg-white rounded">
+                    Order time:
+                    <%=item.order_time%>
+                        <br> Expected Arrival Time:
+                        <%=item.expected_time%>
+                            <br> Address:
+                            <%=item.address%>
+                                <br> Item:
+                                <%=item.items%>
+                                    <br>
 
+                </div>
+                <% }); %>
         </div>
+
+        <div id="viewDiv"></div>
+
 
 </body>
 
 </html>
+
+<script>
+    require([
+        "esri/Map",
+        "esri/views/MapView"
+    ], function(Map, MapView) {
+
+        var map = new Map({
+            basemap: "topo-vector"
+        });
+
+        var view = new MapView({
+            container: "viewDiv",
+            map: map,
+            center: [-111.7897, 43.8260], // longitude, latitude
+            zoom: 15
+        });
+    });
+</script>
