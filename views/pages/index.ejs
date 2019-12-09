@@ -32,16 +32,23 @@
         <div class="container">
             <%rowsjson.forEach((item) => {%>
                 <div class="shadow p-3 mb-5 bg-white rounded">
-                    Order time:
-                    <%=item.order_time%>
-                        <br> Expected Arrival Time:
-                        <%=item.expected_time%>
-                            <br> Address:
-                            <%=item.address%>
-                                <br> Item:
-                                <%=item.items%>
-                                    <br>
+                    <div class="row">
+                        <div class="col">
+                            Order time:
+                            <%=item.order_time%>
+                                <br> Expected Arrival Time:
+                                <%=item.expected_time%>
+                                    <br> Address:
+                                    <%=item.address%>
+                                        <br> Item:
+                                        <%=item.items%>
+                                            <br>
+                                            <div class="col">
+                                                <button>clickme</button>
+                                            </div>
+                        </div>
 
+                    </div>
                 </div>
                 <% }); %>
         </div>
@@ -56,9 +63,10 @@
 <script>
     require([
         "esri/Map",
-        "esri/views/MapView"
-    ], function(Map, MapView) {
-
+        "esri/views/MapView",
+        "esri/Graphic",
+        "esri/layers/GraphicsLayer"
+    ], function(Map, MapView, Graphic, GraphicsLayer) {
         var map = new Map({
             basemap: "topo-vector"
         });
@@ -69,5 +77,30 @@
             center: [-111.7897, 43.8260], // longitude, latitude
             zoom: 15
         });
+
+        var point = {
+            type: "point",
+            longitude: -118.80657463861,
+            latitude: 34.0005930608889
+        };
+
+        var simpleMarkerSymbol = {
+            type: "simple-marker",
+            color: [226, 119, 40], // orange
+            outline: {
+                color: [255, 255, 255], // white
+                width: 1
+            }
+        };
+
+        var pointGraphic = new Graphic({
+            geometry: point,
+            symbol: simpleMarkerSymbol
+        });
+
+        graphicsLayer.add(pointGraphic);
+
+        var graphicsLayer = new GraphicsLayer();
+        map.add(graphicsLayer);
     });
 </script>

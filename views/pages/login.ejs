@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/header.ejs %>
+        <script src="scripts/order.js"></script>
+</head>
+
+<body>
+
+    <% include ../partials/nav.ejs %>
+        <div class="wrapper fadeInDown">
+            <div id="formContent">
+
+                <div class="jumbotron text-center">
+                    <div class="container">
+                        <h3>Hi if you are a staff please login (ac: jack, pw :1234), otherwise press Order</h3>
+                        <span class="glyphicon glyphicon-download"></span><button id="checkOut" class="btn btn-lg btn-primary">Make Order</button></span>
+                    </div>
+                </div>
+
+                <input type="text" id="username" class="fadeIn second" placeholder="username">
+                <input type="password" id="password" class="fadeIn third" placeholder="password">
+                <button class="fadeIn fourth" id="login" onclick="login();">Log in</button>
+                <div id="error"></div>
+            </div>
+        </div>
+
+</body>
+
+</html>

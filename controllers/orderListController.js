@@ -78,7 +78,43 @@ function getOrder(req, res) {
     });
 }
 
+function login(req, res) {
+    console.log("I logined !!!!!!");
+    console.log("start");
+    var username = req.body.username;
+    var password = req.body.password;
+    console.log("name :" + username + "password" + password);
+
+    var sql = "SELECT password, id FROM staff_info WHERE name = '" + username + "'";
+    pool.query(sql, function(err, result) {
+        // If an error occurred...
+        if (err) {
+            console.log("Error in query: ")
+            console.log(err);
+        }
+        // Log this to the console for debugging purposes.
+        if (result.rows.length >= 1 && password == result.rows[0].password) {
+            console.log("right password");
+            var user_id = result.rows[0].id;
+            session = req.session;
+            session.id = user_id;
+            console.log("session id :" + session.id);
+            var result = { success: true };
+            res.json(result);
+            res.end();
+        } else {
+            console.log("wrong password");
+            var result = { success: false };
+            res.json(result);
+        }
+
+    });
+
+}
+
+
 module.exports = {
     addToGo: addToGo,
-    getOrder: getOrder
+    getOrder: getOrder,
+    login: login
 };

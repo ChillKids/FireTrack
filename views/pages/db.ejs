@@ -1,23 +1,34 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <% include ../partials/header.ejs %>
+    <% include ../partials/header.ejs %>
+        <link rel="stylesheet" href="https://js.arcgis.com/4.13/esri/themes/light/main.css">
+
 </head>
 
 <body>
 
-<% include ../partials/nav.ejs %>
+    <% include ../partials/nav.ejs %>
 
-<div class="container">
-<h2>Database Results</h2>
+        <div class="jumbotron text-center">
+            <div class="container">
+                <h3 id="title">If you are staff enter your name and password (ac: jack pw: 1234).<br> Otherwise, please click this button to place order</h3>
+                <span class="glyphicon glyphicon-download"></span><button id="checkOut" class="btn btn-lg btn-primary">Place Order</button></span>
+            </div>
+        </div>
 
-<ul>
-    <% results.forEach(function(r) { %>
-        <li><%= r.id %> - <%= r.name %></li>
-    <% }); %>
-</ul>
+        <form id="login" action="/login" method="POST">
+            username:
+            <input type="text" id="username" name="username" placeholder="username"><br> password:
+            <input type="password" id="password" name="password" placeholder="password"><br>
+            <input type="submit" value="Enter">
+            <%if(result){=result}%>
+        </form>
+        </div>
 
-</div>
 
 </body>
+
+
 </html>
