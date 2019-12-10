@@ -12,7 +12,7 @@ function addToGo(req, res) {
             console.log("Back from element:");
             console.log(element);
             Number(element);
-            var sql = "UPDATE order_list SET staff_id = 2 WHERE id = " + element;
+            var sql = "UPDATE order_list SET staff_id = " + req.session.user.user_id + "WHERE id = " + element;
             pool.query(sql, function(err, result) {
                 // If an error occurred...
                 if (err) {
@@ -27,7 +27,7 @@ function addToGo(req, res) {
         console.log("Back from result:");
         console.log(result);
         Number(result);
-        var sql = "UPDATE order_list SET staff_id = 2 WHERE id = " + result;
+        var sql = "UPDATE order_list SET staff_id =" + req.session.user.user_id + " WHERE id = " + result;
         pool.query(sql, function(err, result) {
             // If an error occurred...
             if (err) {
@@ -38,11 +38,17 @@ function addToGo(req, res) {
             console.log("Updated");
         })
     }
+
     ownedList(req, res);
 }
 
 function ownedList(req, res) {
-    var sql = "SELECT * FROM order_list WHERE (staff_id = 2)";
+    if (!req.session.user) {
+        res.redirect('/login');
+    }
+    var id = req.session.user.user_id;
+    console.log('id: ' + id);
+    var sql = "SELECT * FROM order_list WHERE staff_id =" + id;
     console.log("result.rows");
     pool.query(sql, function(err, result) {
         // If an error occurred...
@@ -96,9 +102,11 @@ function login(req, res) {
         if (result.rows.length >= 1 && password == result.rows[0].password) {
             console.log("right password");
             var user_id = result.rows[0].id;
-            session = req.session;
-            session.id = user_id;
-            console.log("session id :" + session.id);
+            var session = req.session;
+            console.log("user_id" + user_id);
+            var user = { user_id: user_id, user_name: username };
+            session.user = user;
+            console.log("session_user: " + session.user.user_id);
             var result = { success: true };
             res.json(result);
             res.end();
@@ -112,9 +120,39 @@ function login(req, res) {
 
 }
 
+function logout(req, res) {
+    if (req.session.id && req.cookies.user_sid) {
+        res.clearCookie('user_sid');
+        res.redirect('/');
+    } else {
+        res.redirect('/login');
+    }
+}
+
+function deleteOrder(req, res) {
+    order_id = req.body.order_id;
+    var sql = "DELETE FROM order_list WHERE id =" + order_id;
+    pool.query(sql, function(err, result) {
+        // If an error occurred...
+        if (err) {
+            console.log("Error in query: ")
+            console.log(err);
+            var result = { success: false };
+            res.json(reselt);
+        }
+        // Log this to the console for debugging purposes.
+        console.log("Deleted!");
+        var result = { success: true };
+        res.json(result);
+
+
+    });
+}
 
 module.exports = {
     addToGo: addToGo,
     getOrder: getOrder,
-    login: login
+    login: login,
+    logout: logout,
+    deleteOrder: deleteOrder
 };

@@ -5,18 +5,50 @@ const PORT = process.env.PORT || 5000
 const orderListController = require("./controllers/orderListController.js")
 
 var session = require('express-session');
-var parseurl = require('parseurl')
+var parseurl = require('parseurl');
+var cookieParser = require('cookie-parser');
+var sessionChecker = (req, res, next) => {
+    if (!req.session.user) {
+        res.redirect('/');
+    } else {
+        next();
+    }
+};
 
 
 express()
     .use(express.static(path.join(__dirname, 'public')))
     .use(express.urlencoded({ extended: true }))
     .use(express.json())
+    .use(cookieParser())
     .use(session({
-        secret: 'keyboard cat',
+        key: 'user_sid',
+        secret: 'somerandonstuffs',
         resave: false,
-        saveUninitialized: true
+        saveUninitialized: false,
+        cookie: {
+            expires: 600000
+        }
     }))
+
+// Using Session
+.use(function(req, res, next) {
+    if (!req.session.views) {
+        req.session.views = {}
+    }
+    // get the url pathname
+    var pathname = parseurl(req).pathname
+        // count the views
+    req.session.views[pathname] = (req.session.views[pathname] || 0) + 1
+    next()
+})
+
+.use((req, res, next) => {
+    if (req.cookies.user_sid && !req.session.id) {
+        res.clearCookie('user_sid');
+    }
+    next();
+})
 
 
 
@@ -24,7 +56,9 @@ express()
     .set('view engine', 'ejs')
     .get('/', (req, res) => res.render("pages/login"))
     .post('/login', orderListController.login)
-    .post('/toGo', orderListController.addToGo)
+    .post('/toGo', sessionChecker, orderListController.addToGo)
+    .post('/deleteOrder', orderListController.deleteOrder)
+    .post('/logout', orderListController.logout)
     .get('/toGo', orderListController.addToGo)
-    .get('/getOrder', orderListController.getOrder)
+    .get('/getOrder', sessionChecker, orderListController.getOrder)
     .listen(PORT, () => console.log(`Listening on ${ PORT }`))

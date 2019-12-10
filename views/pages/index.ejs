@@ -9,13 +9,13 @@
             html,
             body,
             #viewDiv {
-                padding: 40;
-                margin: 60;
+                padding: 0;
+                margin: 0;
                 height: 100%;
                 width: 100%;
             }
         </style>
-
+        <script src="scripts/order.js"></script>
 </head>
 
 <body>
@@ -24,7 +24,7 @@
 
         <div class="jumbotron text-center">
             <div class="container">
-                <h3>Hi Jack! Welcome to work. Press this button to check your order</h3>
+                <h3> Welcome to work. Press this button to check on the way orders</h3>
                 <a type="button" class="btn btn-lg btn-primary" href="/getOrder"><span class="glyphicon glyphicon-download"></span>Get Your Order</a>
             </div>
         </div>
@@ -44,7 +44,8 @@
                                         <%=item.items%>
                                             <br>
                                             <div class="col">
-                                                <button>clickme</button>
+                                                <button id="delete" value="<%=item.id%>"> delete</button>
+
                                             </div>
                         </div>
 
@@ -63,10 +64,9 @@
 <script>
     require([
         "esri/Map",
-        "esri/views/MapView",
-        "esri/Graphic",
-        "esri/layers/GraphicsLayer"
-    ], function(Map, MapView, Graphic, GraphicsLayer) {
+        "esri/views/MapView"
+    ], function(Map, MapView) {
+
         var map = new Map({
             basemap: "topo-vector"
         });
@@ -77,30 +77,5 @@
             center: [-111.7897, 43.8260], // longitude, latitude
             zoom: 15
         });
-
-        var point = {
-            type: "point",
-            longitude: -118.80657463861,
-            latitude: 34.0005930608889
-        };
-
-        var simpleMarkerSymbol = {
-            type: "simple-marker",
-            color: [226, 119, 40], // orange
-            outline: {
-                color: [255, 255, 255], // white
-                width: 1
-            }
-        };
-
-        var pointGraphic = new Graphic({
-            geometry: point,
-            symbol: simpleMarkerSymbol
-        });
-
-        graphicsLayer.add(pointGraphic);
-
-        var graphicsLayer = new GraphicsLayer();
-        map.add(graphicsLayer);
     });
 </script>
