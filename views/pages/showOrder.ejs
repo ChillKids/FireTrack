@@ -3,19 +3,11 @@
 
 <head>
     <% include ../partials/header.ejs %>
+        <script src="https://unpkg.com/muuri@0.8.0/dist/muuri.min.js"></script>
+        <script src="https://unpkg.com/web-animations-js@2.3.2/web-animations.min.js"></script>
+        <script src="scripts/order.js"></script>
         <link rel="stylesheet" href="https://js.arcgis.com/4.13/esri/themes/light/main.css">
         <script src="https://js.arcgis.com/4.13/"></script>
-        <style>
-            html,
-            body,
-            #viewDiv {
-                padding: 0;
-                margin: 0;
-                height: 100%;
-                width: 100%;
-            }
-        </style>
-        <script src="scripts/order.js"></script>
 </head>
 
 <body>
@@ -29,11 +21,11 @@
             </div>
         </div>
 
-        <div class="container">
+        <div class="grid">
             <%rowsjson.forEach((item) => {%>
-                <div class="shadow p-3 mb-5 bg-white rounded">
-                    <div class="row">
-                        <div class="col">
+                <div class="item">
+                    <div class="item-content">
+                        <div class="shadow p-3 mb-5 bg-white rounded">
                             Order time:
                             <%=item.order_time%>
                                 <br> Expected Arrival Time:
@@ -43,19 +35,19 @@
                                         <br> Item:
                                         <%=item.items%>
                                             <br>
-                                            <div class="col">
-                                                <button id="delete" value="<%=item.id%>"> delete</button>
+                                            <button id="delete" class="delete" value="<%=item.id%>"> Delete</button>
+                                            <button id="return" class="return" value="<%=item.id%>"> Return Order</button>
 
-                                            </div>
                         </div>
+
 
                     </div>
                 </div>
                 <% }); %>
         </div>
 
-        <div id="viewDiv"></div>
 
+        <div id="viewDiv"></div>
 
 </body>
 

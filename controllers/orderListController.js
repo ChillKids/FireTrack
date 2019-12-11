@@ -20,7 +20,7 @@ function addToGo(req, res) {
                     console.log(err);
                 }
                 // Log this to the console for debugging purposes.
-                console.log("Updated");
+                console.log("Update Array");
             });
         })
     } else if (result != null) {
@@ -35,7 +35,7 @@ function addToGo(req, res) {
                 console.log(err);
             }
             // Log this to the console for debugging purposes.
-            console.log("Updated");
+            console.log("Updated Single");
         })
     }
 
@@ -61,7 +61,7 @@ function ownedList(req, res) {
         console.log("Back from DB with result:");
         console.log(result.rows);
         rowsjson = result.rows;
-        res.render('pages/index', { "rowsjson": rowsjson });
+        res.render('pages/showOrder', { "rowsjson": rowsjson });
     });
 }
 
@@ -144,8 +144,24 @@ function deleteOrder(req, res) {
         console.log("Deleted!");
         var result = { success: true };
         res.json(result);
+    });
+}
 
-
+function returnOrder(req, res) {
+    order_id = req.body.order_id;
+    var sql = "UPDATE order_list SET staff_id = 1 WHERE id = " + order_id;
+    pool.query(sql, function(err, result) {
+        // If an error occurred...
+        if (err) {
+            console.log("Error in query: ")
+            console.log(err);
+            var result = { success: false };
+            res.json(reselt);
+        }
+        // Log this to the console for debugging purposes.
+        console.log("Returned!");
+        var result = { success: true };
+        res.json(result);
     });
 }
 
@@ -154,5 +170,6 @@ module.exports = {
     getOrder: getOrder,
     login: login,
     logout: logout,
-    deleteOrder: deleteOrder
+    deleteOrder: deleteOrder,
+    returnOrder: returnOrder
 };
