@@ -6,8 +6,7 @@
         <script src="https://unpkg.com/muuri@0.8.0/dist/muuri.min.js"></script>
         <script src="https://unpkg.com/web-animations-js@2.3.2/web-animations.min.js"></script>
         <script src="scripts/order.js"></script>
-        <link rel="stylesheet" href="https://js.arcgis.com/4.13/esri/themes/light/main.css">
-        <script src="https://js.arcgis.com/4.13/"></script>
+
 </head>
 
 <body>
@@ -49,25 +48,65 @@
 
         <div id="viewDiv"></div>
 
+
+
+        <link rel="stylesheet" href="https://js.arcgis.com/4.13/esri/themes/light/main.css">
+        <script src="https://js.arcgis.com/4.13/"></script>
+        <style>
+            #viewDiv {
+                margin: auto;
+                margin-left: 50px;
+                height: 90%;
+                width: 90%;
+            }
+        </style>
+        <script>
+            require(["esri/Map", "esri/views/MapView", "esri/widgets/Search"],
+                function(Map, MapView, Search) {
+                    var search = new Search({
+                        view: view
+                    });
+                    var map = new Map({
+                        basemap: "topo-vector"
+                    });
+                    // Create a Map instance var myMap = new Map({ basemap: 'streets' }); // Create a MapView instance (for 2D viewing) and reference the map instance
+                    var view = new MapView({
+                        container: "viewDiv",
+                        map: map,
+                        center: [-111.822546, 43.79132], // longitude, latitude
+                        zoom: 13,
+                        search: search
+                    });
+
+                    view.on("click", function(evt) {
+                        search.clear();
+                        view.popup.clear();
+                        if (search.activeSource) {
+                            var geocoder = search.activeSource.locator; // World geocode service
+                            var params = {
+                                location: evt.mapPoint
+                            };
+                            geocoder.locationToAddress(params)
+                                .then(function(response) { // Show the address found
+                                    var address = response.address;
+                                    showPopup(address, evt.mapPoint);
+                                }, function(err) { // Show no address found
+                                    showPopup("No address found.", evt.mapPoint);
+                                });
+                        }
+                    });
+
+                    function showPopup(address, pt) {
+                        view.popup.open({
+                            title: +Math.round(pt.longitude * 100000) / 100000 + "," + Math.round(pt.latitude * 100000) / 100000,
+                            content: address,
+                            location: pt
+                        });
+                    }
+
+                    view.ui.add(search, "top-right");
+                });
+        </script>
 </body>
 
 </html>
-
-<script>
-    require([
-        "esri/Map",
-        "esri/views/MapView"
-    ], function(Map, MapView) {
-
-        var map = new Map({
-            basemap: "topo-vector"
-        });
-
-        var view = new MapView({
-            container: "viewDiv",
-            map: map,
-            center: [-111.7897, 43.8260], // longitude, latitude
-            zoom: 15
-        });
-    });
-</script>
