@@ -3,6 +3,7 @@
 
 <head>
     <% include ../partials/header.ejs %>
+        <script src="scripts/getOrder.js"></script>
 
 </head>
 
@@ -12,24 +13,24 @@
 
         <div class="jumbotron text-center">
             <div class="container">
-                <h3>Hi Jack! Welcome to work. Press this button to check your order</h3>
+                <h3>Here are the New Orders. Press this button to check out the orders you will deliver.</h3>
                 <form action="/toGo" method="POST">
-                    <span class="glyphicon glyphicon-download"></span><input type="submit" id="checkOut" class="btn btn-lg btn-primary" value="Check Out"></span>
+                    <input type="submit" id="checkOut" class="btn btn-lg btn-primary" value="Check Out"></span>
             </div>
         </div>
 
         <div class="container-fluid">
-            <div class="row flex-row flex-nowrap" id="box">
+            <div class="row flex-row flex-wrap" id="box">
                 <%rowsjson.forEach((item) => {%>
                     <div class="col-md-4 col-lg-4">
                         <div class="shadow p-3 mb-5 bg-white rounded card" style="width: 20rem;">
                             <div class="card-body">
                                 <h5 class="card-title">Order</h5>
                                 <p class="card-text">
-                                    Order time:
-                                    <%=item.order_time%>
-                                        <br> Expected Arrival Time:
-                                        <%=item.expected_time%>
+                                    Order time:<br>
+                                    <%=moment(item.order_time).format( 'DD  MMM  YYYY, h:mm:ss a')%>
+                                        <br> Expected Arrival Time:<br>
+                                        <%=moment(item.expected_time).format( 'DD  MMM  YYYY, h:mm:ss a')%>
                                             <br> Address:
                                             <%=item.address%>
                                                 <br> Item:
@@ -37,7 +38,12 @@
                                                     <br>
                                 </p>
 
-                                <input type="checkbox" name="order" value="<%=item.id%>" autocomplete="off">Take It
+                                <label class="switch">
+                                <input type="checkbox" name="order" value="<%=item.id%>" autocomplete="off">
+                                <span class="slider"></span>
+                                </label>
+
+                                <button type="button" class="copy btn btn-outline-info" data-clipboard-text="<%=item.address%>">Copy Address</button>
 
                             </div>
                         </div>
@@ -46,6 +52,7 @@
             </div>
         </div>
         </form>
+        <div id="snackbar">Copied</div>
 
         <div id="viewDiv"></div>
 

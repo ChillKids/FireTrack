@@ -1,6 +1,7 @@
 const { Pool } = require('pg')
 const connectionString = process.env.DATABASE_URL || "postgres://edjrblcydonapn:42e1f69ee902115d76f4acf357a35cb5576916a4417bf172c59565e6c8e12624@ec2-174-129-214-42.compute-1.amazonaws.com:5432/d7oveiplirdm04?ssl=true";
 const pool = new Pool({ connectionString: connectionString });
+const moment = require('moment');
 
 function addToGo(req, res) {
     var result = req.body.order;
@@ -61,7 +62,7 @@ function ownedList(req, res) {
         console.log("Back from DB with result:");
         console.log(result.rows);
         rowsjson = result.rows;
-        res.render('pages/showOrder', { "rowsjson": rowsjson });
+        res.render('pages/showOrder', { "rowsjson": rowsjson, moment: moment });
     });
 }
 
@@ -80,7 +81,7 @@ function getOrder(req, res) {
         console.log("Back from DB with result:");
         console.log(result.rows);
         rowsjson = result.rows;
-        res.render('pages/getOrder', { "rowsjson": rowsjson });
+        res.render('pages/getOrder', { "rowsjson": rowsjson, moment: moment });
     });
 }
 
@@ -165,11 +166,48 @@ function returnOrder(req, res) {
     });
 }
 
+function insertOrder(req, res) {
+    console.log("Inserting");
+    var order_name = req.body.order_name;
+    var contact_num = req.body.phone;
+    var street = req.body.street;
+    var apt = req.body.apt;
+    var city = req.body.city;
+    var state = req.body.state;
+    var zip = req.body.zip;
+    var items = req.body.items;
+    var arrival_time = moment(req.body.arrival_time).format("YYYY-MM-DD HH:mm:ss");
+    var current_time = moment().format("YYYY-MM-DD HH:mm:ss");
+
+    var address = apt + " " + street + ", " + city + " " + state + ", " + zip;
+
+    console.log("name :" + order_name + "contact" + contact_num + "address: " + address + "items: " + items + "Arrival time: " + req.body.arrival_time + "current time" + current_time);
+    var sql = "INSERT INTO order_list (contact_num, order_name, order_time, priority, shop_address, address, arrival_time, expected_time, items, staff_id) VALUES ('" + contact_num + "', '" + order_name + "','" + current_time + "', 1, '100 S 2nd W, Rexburg, ID', '" + address + "', '" + arrival_time + "', '2019-11-23 00:00:01', '" + items + "', 1);"
+    pool.query(sql, function(err, result) {
+        // If an error occurred...
+        if (err) {
+            console.log("Error in query: ")
+            console.log(err);
+            var result = { success: false };
+            res.json(result);
+        } else {
+            // Log this to the console for debugging purposes.
+            console.log("Insert successfully!!")
+            var result = { success: true };
+            res.json(result);
+            res.end();
+        }
+    })
+};
+
+
+
 module.exports = {
     addToGo: addToGo,
     getOrder: getOrder,
     login: login,
     logout: logout,
     deleteOrder: deleteOrder,
-    returnOrder: returnOrder
+    returnOrder: returnOrder,
+    insertOrder: insertOrder
 };

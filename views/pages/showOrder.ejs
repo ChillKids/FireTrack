@@ -3,8 +3,6 @@
 
 <head>
     <% include ../partials/header.ejs %>
-        <script src="https://unpkg.com/muuri@0.8.0/dist/muuri.min.js"></script>
-        <script src="https://unpkg.com/web-animations-js@2.3.2/web-animations.min.js"></script>
         <script src="scripts/order.js"></script>
 
 </head>
@@ -15,8 +13,10 @@
 
         <div class="jumbotron text-center">
             <div class="container">
-                <h3> Welcome to work. Press this button to check on the way orders</h3>
-                <a type="button" class="btn btn-lg btn-primary" href="/getOrder"><span class="glyphicon glyphicon-download"></span>Get Your Order</a>
+                <h3> Welcome to work. Press this button to check on the way orders<br>Drag and move around the items</h3>
+                <a type="button" class="btn btn-lg btn-primary" href="/getOrder">Get Your Order</a>
+                <h4 id="current_time">
+                </h4>
             </div>
         </div>
 
@@ -25,17 +25,29 @@
                 <div class="item">
                     <div class="item-content">
                         <div class="shadow p-3 mb-5 bg-white rounded">
-                            Order time:
-                            <%=item.order_time%>
-                                <br> Expected Arrival Time:
-                                <%=item.expected_time%>
-                                    <br> Address:
+                            <h3></h3>
+                            <div class="row">
+                                <div class="column">Expected Arrival Time:</div>
+                                <div class="column">
+                                    <%=moment(item.expected_time).format( 'DD  MMM  YYYY, h:mm:ss a')%>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="column"> Address:</div>
+                                <div class="column">
                                     <%=item.address%>
-                                        <br> Item:
-                                        <%=item.items%>
-                                            <br>
-                                            <button id="delete" class="delete" value="<%=item.id%>"> Delete</button>
-                                            <button id="return" class="return" value="<%=item.id%>"> Return Order</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="column">Item:</div>
+                                <div class="column">
+                                    <%=item.items%>
+                                </div>
+                            </div>
+                            <br>
+                            <button id="delete" class="delete btn btn-outline-secondary" value="<%=item.id%>">Delete</button>
+                            <button id="return" class="return btn btn-outline-warning" value="<%=item.id%>"> Return Order</button>
+                            <button id="copy" class="copy btn btn-outline-info" data-clipboard-text="<%=item.address%>">Copy Address</button>
 
                         </div>
 
@@ -47,6 +59,8 @@
 
 
         <div id="viewDiv"></div>
+
+        <div id="snackbar">Copied</div>
 
 
 

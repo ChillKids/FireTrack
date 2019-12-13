@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/stylesheets/main.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
+
+    <script src="/scripts/insertOrder.js"></script>
+    <title>CS313: FireTrack</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars" aria-controls="navbarsExample01" aria-expanded="true" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+        <a class="navbar-brand" href="/">Fire Track v.0.0.1</a>
+
+
+        <div class="collapse navbar-collapse" id="navbars">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/customer.html">Customer</a>
+                </li>
+                <li>
+                    <button onclick="logout();">Log out</button><br>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="jumbotron text-center">
+        <div class="container">
+            <h3>Welcome to America Diebetic</h3>
+
+        </div>
+    </div>
+    <div class="customer shadow p-3 mb-5 bg-white rounded">
+        <form method="POST" action="/insertOrder" id="insertForm">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="name">Name</label>
+                    <input type="name" class="form-control" name="order_name" id="name" placeholder="Enter Your Name" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="contact_num">Contact Number (exp: 1231231234)</label>
+                    <input type="tel" class="form-control" id="contact_num" name="phone" placeholder="(xxx xxx xxxx)" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputAddress">Address</label>
+                <input type="text" class="form-control" name="street" id="inputAddress" placeholder="1234 Main St" required>
+            </div>
+            <div class="form-group">
+                <label for="inputAddress2">Address 2</label>
+                <input type="text" class="form-control" name="apt" id="inputAddress2" placeholder="Apartment, studio, or floor (optional)">
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputCity">City</label>
+                    <input type="texts" placeholder="City" name="city" class="form-control" id="inputCity" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputState">State</label>
+                    <select id="inputState" name="state" class="form-control">
+              <option selected>ID</option>
+              <option>AL</option>
+              <option>AK</option>
+              <option>AZ</option>
+              <option>AR</option>
+              <option>CA</option>
+              <option>CO</option>
+              <option>CT</option>
+              <option>DE</option>
+              <option>FL</option>
+            </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputZip">Zip</label>
+                    <input type="number" placeholder="83440" name="zip" class="form-control" pattern="[0-9]{5}" id="inputZip">
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class='col'>
+                        <label for="datetimepicker4">Arrvial Time</label>
+                        <input type='text' name="arrival_time" class="form-control" id='datetimepicker4' />
+                    </div>
+                    <script type="text/javascript">
+                        $(function() {
+                            $('#datetimepicker4').datetimepicker({
+                                format: "YYYY-MM-DD HH:mm:ss"
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Items">Choose Your Diebetic Combo</label>
+                <textarea class="form-control" name="items" id="items" rows="3" placeholder="Want to gain weight? Want Pizza? That's right." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">CheckOut</button>
+        </form>
+    </div>
+
+</body>
+
+</html>
