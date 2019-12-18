@@ -24,7 +24,10 @@ $(document).ready(function() {
             success: function(data) {
                 console.log('Submission was successful.');
                 console.log(data);
-                alert("Success")
+                if (alert("Success")) {
+                    window.location.reload();
+                };
+
             },
             error: function(data) {
                 console.log('An error occurred.');

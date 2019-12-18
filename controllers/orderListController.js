@@ -49,7 +49,7 @@ function ownedList(req, res) {
     }
     var id = req.session.user.user_id;
     console.log('id: ' + id);
-    var sql = "SELECT * FROM order_list WHERE staff_id =" + id;
+    var sql = "SELECT * FROM order_list WHERE staff_id =" + id + " ORDER BY arrival_time, order_name";
     console.log("result.rows");
     pool.query(sql, function(err, result) {
         // If an error occurred...
@@ -68,7 +68,7 @@ function ownedList(req, res) {
 
 
 function getOrder(req, res) {
-    var sql = "SELECT * FROM order_list WHERE (staff_id = 1)";
+    var sql = "SELECT * FROM order_list WHERE (staff_id = 1) ORDER BY order_time";
     console.log("result.rows");
     pool.query(sql, function(err, result) {
         // If an error occurred...
