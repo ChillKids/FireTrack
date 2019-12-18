@@ -25,7 +25,10 @@
                 <div class="item">
                     <div class="item-content">
                         <div class="shadow p-3 mb-5 bg-white rounded">
-                            <h3></h3>
+
+                            <h3>
+                                <%=item.order_name%>
+                            </h3>
                             <div class="row">
                                 <div class="column">Expected Arrival Time:</div>
                                 <div class="column">
@@ -43,6 +46,10 @@
                                 <div class="column">
                                     <%=item.items%>
                                 </div>
+                            </div>
+                            <div class="column">Contact Number:</div>
+                            <div class="column">
+                                <%=item.contact_num%>
                             </div>
                             <br>
                             <button id="delete" class="delete btn btn-outline-secondary" value="<%=item.id%>">Delete</button>
@@ -77,9 +84,7 @@
         <script>
             require(["esri/Map", "esri/views/MapView", "esri/widgets/Search"],
                 function(Map, MapView, Search) {
-                    var search = new Search({
-                        view: view
-                    });
+
                     var map = new Map({
                         basemap: "topo-vector"
                     });
@@ -117,7 +122,9 @@
                             location: pt
                         });
                     }
-
+                    var search = new Search({
+                        view: view
+                    });
                     view.ui.add(search, "top-right");
                 });
         </script>

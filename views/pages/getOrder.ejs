@@ -25,7 +25,9 @@
                     <div class="col-md-4 col-lg-4">
                         <div class="shadow p-3 mb-5 bg-white rounded card" style="width: 20rem;">
                             <div class="card-body">
-                                <h5 class="card-title">Order</h5>
+                                <h5 class="card-title">Order
+                                    <%=item.order_name%>
+                                </h5>
                                 <p class="card-text">
                                     Order time:<br>
                                     <%=moment(item.order_time).format( 'DD  MMM  YYYY, h:mm:ss a')%>
@@ -33,9 +35,11 @@
                                         <%=moment(item.expected_time).format( 'DD  MMM  YYYY, h:mm:ss a')%>
                                             <br> Address:
                                             <%=item.address%>
-                                                <br> Item:
-                                                <%=item.items%>
-                                                    <br>
+                                                <br> Contact:
+                                                <%=item.contact_num%>
+                                                    <br> Item:
+                                                    <%=item.items%>
+                                                        <br>
                                 </p>
 
                                 <label class="switch">
@@ -71,9 +75,6 @@
         <script>
             require(["esri/Map", "esri/views/MapView", "esri/widgets/Search"],
                 function(Map, MapView, Search) {
-                    var search = new Search({
-                        view: view
-                    });
                     var map = new Map({
                         basemap: "topo-vector"
                     });
@@ -82,8 +83,8 @@
                         container: "viewDiv",
                         map: map,
                         center: [-111.822546, 43.79132], // longitude, latitude
-                        zoom: 13,
-                        search: search
+                        search: search,
+                        zoom: 13
                     });
 
                     view.on("click", function(evt) {
@@ -111,7 +112,9 @@
                             location: pt
                         });
                     }
-
+                    var search = new Search({
+                        view: view
+                    });
                     view.ui.add(search, "top-right");
                 });
         </script>

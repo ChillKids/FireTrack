@@ -121,14 +121,6 @@ function login(req, res) {
 
 }
 
-function logout(req, res) {
-    if (req.session.id && req.cookies.user_sid) {
-        res.clearCookie('user_sid');
-        res.redirect('/');
-    } else {
-        res.redirect('/login');
-    }
-}
 
 function deleteOrder(req, res) {
     order_id = req.body.order_id;
@@ -206,7 +198,6 @@ module.exports = {
     addToGo: addToGo,
     getOrder: getOrder,
     login: login,
-    logout: logout,
     deleteOrder: deleteOrder,
     returnOrder: returnOrder,
     insertOrder: insertOrder
